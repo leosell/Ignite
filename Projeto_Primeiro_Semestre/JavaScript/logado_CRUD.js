@@ -131,7 +131,8 @@ const editarExclusao = (event) => {
         } else {
             const jogadores = readJogadores()[index]
             Swal.fire({
-                title: 'Você tem certeza?',
+                title: 'Excluindo...',
+                text: 'Você tem certeza que deseja excluir?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -140,9 +141,10 @@ const editarExclusao = (event) => {
                 confirmButtonText: 'Sim!'
               }).then((result) => {
                 if (result.isConfirmed) {
-                  Swal.fire(
-                    'Jogador excluído!',
-                  )
+                  Swal.fire({
+                    title: 'Jogador excluido',
+                    icon: 'success'
+                  })
                     deletarJogadores(index),
                     atualizarTabela()
                 }
