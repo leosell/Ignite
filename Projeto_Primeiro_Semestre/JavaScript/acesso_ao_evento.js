@@ -11,6 +11,7 @@ const closeModal2 = () => {
 
 const getLogin = () => {return localStorage.getItem('loggedUser')}
 const getLocalStorage = () => JSON.parse(localStorage.getItem('listaJogadores')) ?? []
+const setLocalStorage = (lista_jogadores) => localStorage.setItem('listaJogadores', JSON.stringify(lista_jogadores))
 
 const readJogadores = () => getLocalStorage().filter(jogador => jogador.criadoPor == getLogin())
 
@@ -20,7 +21,7 @@ const criarLista = (jogadores, index) => {
         <td>${jogadores.modalidade}</td>
         <td>${jogadores.nome}</td>
         <td class="senha-acesso">${jogadores.senha}</td>
-        <td id="entradaInput">${""}</td>
+        <td id="entradaInput">${jogadores.entrada}</td>
         <td id="saidaInput">${""}</td>
         <td>
             <button type="button" onclick="entradaModalOpen(${index})" class="botao-entrada" id="entradaIndex-${index}">Entrada</button>
@@ -138,15 +139,20 @@ setInterval(function () {
   }, 2000 ) ;
 
 function entradaHora(){
+    const lista_jogadores = getLocalStorage()
     let dataAtual = new Date();
     let dia = ("0" + dataAtual.getDate()).slice(-2);
     let mes = ("0" + (dataAtual.getMonth() + 1)).slice(-2);
     let ano = dataAtual.getFullYear();
     let horas = dataAtual.getHours()
     let minutos = ("0" + dataAtual.getMinutes()).slice(-2);
-
+    
     entrou = (`${dia}/${mes}/${ano} - ${horas}:${minutos}`)
-    document.getElementById('entradaInput').innerHTML = entrou
+    let entradaLabel = document.getElementById('entradaInput').innerHTML = entrou
+    lista_jogadores.entrada = entradaLabel
+
+    console.log(lista_jogadores.entrada)
+    setLocalStorage(lista_jogadores)
 }
 
 function saidaHora(){
@@ -173,7 +179,7 @@ document.getElementById('botao-cancelar').addEventListener('click', desabilitaLe
 document.getElementById('botao-cancelar').addEventListener('click', closeModal)
 
 document.getElementById('botao-cancelar-2').addEventListener('click', desabilitaLeitura)
-document.getElementById('botao-cancelar-2').addEventListener('click', closeModal)
+document.getElementById('botao-cancelar-2').addEventListener('click', closeModal2)
 
 document.getElementById('modalClose').addEventListener('click', closeModal)
 document.getElementById('modalClose-2').addEventListener('click', closeModal2)
